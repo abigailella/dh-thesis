@@ -1,0 +1,49 @@
+#this script was borrowed from a course taught by Scott Enderle and Katie Rawson at HILT. I ran it on a remote system, as I've found that removing stopwords from large amounts of files in this manner is a lengthy process.
+
+#clear the current workspace
+rm(list = ls())
+
+#save the path to the corpus 
+cname = file.path("/path/to/corpus/directory")
+
+#check to make sure the texts are there
+dir(cname)
+
+#install the tm and NLP packages, along with any packages that they depend on
+install.packages("tm",lib="/path/to/library",repos=
+"http://cran.us.r-project.org",dependencies=TRUE)
+
+install.packages("NLP",lib="/path/to/library",repos=
+"http://cran.us.r-project.org",dependencies=TRUE)
+
+#load the packages
+library(NLP, lib.loc="/path/to/library ")
+library(tm, lib.loc="/path/to/library ")
+
+#load the corpus 
+docs = Corpus(DirSource(cname))
+
+#check to make sure that everything is there
+summary(docs)
+
+#transform all of the texts in the corpus to lowercase and print out the 
+#first document, just to check 
+docs <-tm_map(docs,content_transformer(tolower))
+writeLines(as.character(docs[[1]]))
+
+#remove numbers and punctuation from the corpus 
+removeNumPunct <- function(x) gsub("[^[:alpha:][:space:]]*", "", x)
+docs <- tm_map(docs, content_transformer(removeNumPunct))
+writeLines(as.character(docs[[1]]))
+
+#remove stopwords
+docs <- tm_map(docs, removeWords, stopwords("english"))
+writeLines(as.character(docs[[1]]))
+
+#stemming
+library(SnowballC)
+docs <- tm_map(docs, stemDocument)
+
+#save the cleaned corpus (as individual text files) to a new directory
+writeCorpus(docs, path = "/path/to/new/directory", filenames = NULL)
+
