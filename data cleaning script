@@ -1,4 +1,6 @@
-#this script was borrowed from a course taught by Scott Enderle and Katie Rawson at HILT. I ran it on a remote system, as I've found that removing stopwords from large amounts of files in this manner is a lengthy process.
+#This script was borrowed from a course taught by Scott Enderle and Katie Rawson at HILT.
+#I ran it on a remote system, as I've found that removing stopwords from large amounts of files
+#in this manner is a lengthy process.
 
 #clear the current workspace
 rm(list = ls())
